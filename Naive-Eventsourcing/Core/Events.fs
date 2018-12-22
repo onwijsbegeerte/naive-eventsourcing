@@ -38,3 +38,26 @@ type Event =
 type EventDto =
     | DepositEvent of DepositEventDto
     | WithdrawEvent of WithdrawEventDto
+
+type MoneyDeposited =
+    { AccountId : AccountId
+      DepositAmount : decimal }
+
+type MoneyWithdraw =
+    { AccountId : AccountId
+      WithdrawAmount : decimal }
+
+type OpenAccount =
+    { Name : string
+      Location : string
+      Birthday : DateTime }
+
+type Command =
+    | MoneyDeposited of MoneyDeposited
+    | MoneyWithdraw of MoneyWithdraw
+    | OpenAccount of OpenAccount
+
+type RetrieveBalance =
+    { AccountId : AccountId }
+
+type Query = RetrieveBalance of RetrieveBalance

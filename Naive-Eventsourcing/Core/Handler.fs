@@ -3,13 +3,15 @@ module NaiveEventsouring.Handler
 open NaiveEventsouring.Domain
 open NaiveEventsouring.Events
 open NaiveEventsouring.Helpers
+open NaiveEventsouring.SerializeWorkflow
+
 
 let StateChangeAgent =
     MailboxProcessor<AccountId>.Start(fun inbox -> 
         let rec loop() =
             async { 
                 let! accountChanged = inbox.Receive()
-                let events = SerialzeWorkflow.DeserializeWorkflow
+                let events = DeserializeWorkflow
                 let result = getAmountFor accountChanged events
                 printfn "%A change: new amount: %f " accountChanged result
                 return! loop()
@@ -23,7 +25,7 @@ let TransactionAgent =
             async { 
                 // read a message
                 let! transactionEvent = inbox.Receive()
-                SerialzeWorkflow.SerializeWorkflow transactionEvent
+                SerializeWorkflow transactionEvent
                 // process a message
                 printfn "transaction is: %A" transactionEvent
                 StateChangeAgent.Post(getAccountId transactionEvent)

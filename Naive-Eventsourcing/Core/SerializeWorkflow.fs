@@ -1,4 +1,4 @@
-module NaiveEventsouring.SerialzeWorkflow
+module NaiveEventsouring.SerializeWorkflow
 
 open System
 open NaiveEventsouring.Events
