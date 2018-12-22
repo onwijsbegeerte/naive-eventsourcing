@@ -10,7 +10,7 @@ let main argv =
     let depositEvent : DepositEvent  = {EventId = (Guid.NewGuid()); Version = 1; AccountId = (AccountId 4); Date = DateTime.Now.AddDays(-10.0); DepositAmount = 500m } 
    // let withdrawEvent : WithdrawEvent  = {EventId = (Guid.NewGuid()); Version = 1; AccountId = (AccountId 4); Date = DateTime.Now.AddDays(-10.0); WithdrawAmount = 100m } 
 
-  //  SerializeWorkflow (Withdraw withdrawEvent)
+   //  SerializeWorkflow (Withdraw withdrawEvent)
     let results = 
         Helpers.getAmountFor (AccountId 4) (SerialzeWorkflow.DeserializeWorkflow)
     
@@ -22,13 +22,6 @@ let main argv =
 
     Console.ReadLine() |> ignore   
     0 // return an integer exit code
-//open Newtonsoft.Json
-
-// Event
-
-    
-
-    
 
 //
 //let event1 = Withdraw { Version = 1; AccountId = (AccountId 4); Date = DateTime.Now.AddDays(-7.0); WithdrawAmount = 10m }

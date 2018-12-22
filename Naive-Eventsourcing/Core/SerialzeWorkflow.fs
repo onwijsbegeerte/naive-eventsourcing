@@ -76,10 +76,8 @@ let SerializeWorkflow (event : Event) =
     |> SafeToDisk (FileName event)
 
 let RetrieveEvents : JsonString list =
-//    "/Users/mendelagterberg/RiderProjects/EventTests/EventTests/events"
-   // let basePath = sprintf "%s/events" (Directory.GetCurrentDirectory())
-   // let allDirs = Directory.GetDirectories (Directory.GetCurrentDirectory())
-    System.IO.Directory.GetFiles("/Users/mendelagterberg/RiderProjects/EventTests/EventTests/events", "*.json", SearchOption.AllDirectories)
+   
+    System.IO.Directory.GetFiles("/Users/**/RiderProjects/EventTests/EventTests/events", "*.json", SearchOption.AllDirectories)
     |> Array.map(fun fn -> fn)
     |> Array.map(fun f -> System.IO.File.ReadAllText(f))
     |> Array.map(fun f -> JsonString f)
