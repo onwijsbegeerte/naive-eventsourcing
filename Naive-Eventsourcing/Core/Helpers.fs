@@ -1,4 +1,5 @@
 module NaiveEventsouring.Helpers
+
 open NaiveEventsouring.Events
 
 let getAmounts event =
@@ -17,16 +18,19 @@ let getAccountId event =
     | Withdraw w -> w.AccountId
     | Deposit d -> d.AccountId
 
-let sortByDate accountId events =
-   List.sortBy (fun e -> e.Date) events
+let sortByDate accountId events = List.sortBy (fun e -> e.Date) events
 
 let getAmountFor accountId (events : Event list) =
-    events 
-    |> List.filter(fun event -> sortByAccount accountId event)
-    |> List.fold(fun state (event : Event) -> state + (getAmounts event)) 0m
+    events
+    |> List.filter (fun event -> sortByAccount accountId event)
+    |> List.fold (fun state (event : Event) -> state + (getAmounts event)) 0m
 
 let getAmountForTime accountId date (events : Event list) =
-    events 
-    |> List.filter(fun event -> sortByAccount accountId event)
-    |> List.filter(fun event -> match event with | Withdraw w when w.Date <= date -> true | Deposit d when d.Date <= date -> true | _ -> false )
-    |> List.fold(fun state (event : Event) -> state + (getAmounts event)) 0m
+    events
+    |> List.filter (fun event -> sortByAccount accountId event)
+    |> List.filter (fun event -> 
+           match event with
+           | Withdraw w when w.Date <= date -> true
+           | Deposit d when d.Date <= date -> true
+           | _ -> false)
+    |> List.fold (fun state (event : Event) -> state + (getAmounts event)) 0m
