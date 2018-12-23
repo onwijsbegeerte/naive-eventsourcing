@@ -1,15 +1,11 @@
-#r "./bin/Debug/netcoreapp2.1/Core.dll"
-
-
-open NaiveEventsouring.Domain
-open NaiveEventsouring.Events
-open NaiveEventsouring.Handler
-open NaiveEventsouring.Helpers
-open System
-
+open System.Windows.Forms
 //TransactionAgent.Post(Withdraw {EventId = (Guid.NewGuid()); Version = 1; AccountId = (AccountId 4); Date = DateTime.Now.AddDays(-10.0); WithdrawAmount = 100m })
-let depositEvent : DepositEvent  = {EventId = (Guid.NewGuid()); Version = 1; AccountId = (AccountId 4); Date = DateTime.Now.AddDays(-10.0); DepositAmount = 500m } 
-TransactionAgent.Post (Deposit depositEvent)
+
+
+
+// TransactionAgent.Start()
+// let depositEvent : DepositEvent  = {EventId = (Guid.NewGuid()); Version = 1; AccountId = (AccountId 4); Date = DateTime.Now.AddDays(-10.0); DepositAmount = 500m } 
+// TransactionAgent.Post (Deposit depositEvent)
 
 // //let event1 = Withdraw { Version = 1; AccountId = (AccountId 4); Date = DateTime.Now.AddDays(-7.0); WithdrawAmount = 10m }
 // //let event2 = Withdraw { Version = 1; AccountId = (AccountId 4); Date = DateTime.Now.AddDays(-6.0); WithdrawAmount = 50m }
@@ -22,7 +18,7 @@ TransactionAgent.Post (Deposit depositEvent)
 // //
 // //
 
-//  let depositEvent : DepositEvent  = {EventId = (Guid.NewGuid()); Version = 1; AccountId = (AccountId 4); Date = DateTime.Now.AddDays(-10.0); DepositAmount = 500m } 
+//let depositEvent : DepositEvent  = {EventId = (Guid.NewGuid()); Version = 1; AccountId = (AccountId 4); Date = DateTime.Now.AddDays(-10.0); DepositAmount = 500m } 
 //    // let withdrawEvent : WithdrawEvent  = {EventId = (Guid.NewGuid()); Version = 1; AccountId = (AccountId 4); Date = DateTime.Now.AddDays(-10.0); WithdrawAmount = 100m } 
 
 //    //  SerializeWorkflow (Withdraw withdrawEvent)

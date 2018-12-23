@@ -1,23 +1,22 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-    <PropertyGroup>
-        <OutputType>Exe</OutputType>
-        <TargetFramework>netcoreapp2.1</TargetFramework>
-    </PropertyGroup>
-
-    <ItemGroup>
-        <Compile Include="Domain.fs" />
-        <Compile Include="Events.fs" />
-        <Compile Include="SerializeWorkflow.fs" />
-        <Compile Include="Helpers.fs" />
-        <Compile Include="Handler.fs" />
-        <Compile Include="scripts.fsx"/>
-        <Compile Include="Program.fs" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <DotNetCliToolReference Include="dotnet-fantomas" Version="2.7.1" />
-      <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
-    </ItemGroup>
-
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Core.fs" />
+    <Compile Include="Domain.fs" />
+    <Compile Include="Events.fs" />
+    <Compile Include="SerializeWorkflow.fs" />
+    <Compile Include="FileSystemPersistence.fs" />
+    <Compile Include="CompositRoot.fs" />
+    <Compile Include="Helpers.fs" />
+    <Compile Include="Handler.fs" />
+    <Compile Include="scripts.fsx" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <DotNetCliToolReference Include="dotnet-fantomas" Version="2.7.1" />
+  </ItemGroup>
 </Project>

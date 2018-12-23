@@ -1,0 +1,2 @@
+module NaiveEventSourcing.Core
+    

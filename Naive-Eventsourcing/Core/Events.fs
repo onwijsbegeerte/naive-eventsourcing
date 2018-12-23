@@ -44,7 +44,7 @@ type MoneyDeposited =
       DepositAmount : decimal }
 
 type MoneyWithdraw =
-    { AccountId : AccountId
+    { AccountId : int
       WithdrawAmount : decimal }
 
 type OpenAccount =
@@ -61,3 +61,14 @@ type RetrieveBalance =
     { AccountId : AccountId }
 
 type Query = RetrieveBalance of RetrieveBalance
+
+let stringNotEmpty s propertyName = if s = "" then Error (sprintf "%s must have a value" propertyName) else Ok s
+
+let NameNotEmpty i = if i.Name = "" then Error "Name must have a value" else Ok i 
+let NameMustBeLessThen100 i = if i.Name.Length > 100 then Error "Name must be less then 100 characters" else Ok i
+
+
+//"hello" |> StringNotEmpty
+
+// let Validate (event : DepositEventDto) rules : Result<DepositEvent,Error> =
+//     List.fold    

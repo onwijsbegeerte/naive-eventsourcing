@@ -13,3 +13,18 @@ type Account =
       AccountStatus : AccountStatus }
 
 let unwrap (AccountId id) = id
+
+type WorkFlowError =
+    | ValidationError of string
+    | SerializationError of string
+    | PercistenceError of string
+
+type Result<'Entity> =
+    | Success of 'Entity
+    | WorkFlowError of WorkFlowError
+
+let Bind f =
+    fun twoTrackInput ->
+        match twoTrackInput with
+        | Success s -> f s
+        | WorkFlowError e -> WorkFlowError e
