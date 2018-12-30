@@ -1,4 +1,4 @@
-open System.Windows.Forms
+// open System.Windows.Forms
 //TransactionAgent.Post(Withdraw {EventId = (Guid.NewGuid()); Version = 1; AccountId = (AccountId 4); Date = DateTime.Now.AddDays(-10.0); WithdrawAmount = 100m })
 
 

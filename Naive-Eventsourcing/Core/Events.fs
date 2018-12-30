@@ -40,7 +40,7 @@ type EventDto =
     | WithdrawEvent of WithdrawEventDto
 
 type MoneyDeposited =
-    { AccountId : AccountId
+    { AccountId : int
       DepositAmount : decimal }
 
 type MoneyWithdraw =
@@ -62,10 +62,42 @@ type RetrieveBalance =
 
 type Query = RetrieveBalance of RetrieveBalance
 
-let stringNotEmpty s propertyName = if s = "" then Error (sprintf "%s must have a value" propertyName) else Ok s
+let validateMoneyDepositedCommand md =
+    if md.DepositAmount > 0m then Success md
+    else WorkFlowError (ValidationError "money deposite must be positive")
 
-let NameNotEmpty i = if i.Name = "" then Error "Name must have a value" else Ok i 
-let NameMustBeLessThen100 i = if i.Name.Length > 100 then Error "Name must be less then 100 characters" else Ok i
+let validateMoneyWithdrawCommand mw =
+    if mw.WithdrawAmount > 0m then Success mw
+    else WorkFlowError (ValidationError "money deposite must be positive")
+
+// let validateMoneyWithdrawCommand mw =
+//     if mw.WithdrawAmount > 0m then Success mw
+//     else WorkFlowError (ValidationError "money deposite must be positive")
+
+// let validateOpenAccount oa =
+//     let inner acc =
+//     if oa.Name <> String.Empty then Success oa
+//     else WorkFlowError (ValidationError "money deposite must be positive")
+
+
+// type OpenAccount =
+//     { Name : string
+//       Location : string
+//       Birthday : DateTime }
+
+// let Validate command =
+//     match command with
+//         | MoneyDeposited md -> validateMoneyDepositedCommand md
+//         | MoneyWithdraw mw -> validateMoneyWithdrawCommand mw
+//         | OpenAccount  oa ->
+
+// let stringNotEmpty s propertyName = if s = "" then Error (sprintf "%s must have a value" propertyName) else Ok s
+
+// let NameNotEmpty i = 
+//     stringNotEmpty i.Name "Name"
+    
+
+// let NameMustBeLessThen100 i = if i.Name.Length > 100 then Error "Name must be less then 100 characters" else Ok i
 
 
 //"hello" |> StringNotEmpty

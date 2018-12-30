@@ -1,5 +1,6 @@
 module NaiveEventsouring.Handler
 
+open System
 open NaiveEventsouring.Domain
 open NaiveEventsouring.Events
 open NaiveEventsouring.Helpers
@@ -32,3 +33,21 @@ let TransactionAgent =
             }
         // start the loop
         transactionLoop())
+
+let CommandHandler = 
+    MailboxProcessor<Command>.Start(fun inbox ->
+        let rec listen() =
+            async {
+                let! command = inbox.Receive()
+                
+                match command with
+                    | MoneyDeposited md -> NaiveEventsouring.CompositRoot.SaveEvent (Deposit {EventId = Guid.NewGuid(); Version = 1; AccountId = (AccountId md.AccountId); Date = DateTime.Now; DepositAmount = md.DepositAmount})
+                    
+                    | MoneyWithdraw mw -> NaiveEventsouring.CompositRoot.SaveEvent (Withdraw {EventId = Guid.NewGuid(); Version = 1; AccountId = (AccountId mw.AccountId); Date = DateTime.Now; WithdrawAmount = mw.WithdrawAmount})
+                    
+                    | OpenAccount  oa -> failwith "not implemented"
+
+                return! listen()
+            }
+
+        listen())

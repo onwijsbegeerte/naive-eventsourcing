@@ -12,7 +12,7 @@ let main argv =
         let command =
             match input with
             | "1" -> "hello"
-            | "2" -> "no"
+            | "2" -> "asd"
             | "3" -> (NaiveEventsouring.Helpers.getAmountFor (AccountId 4) events) |> sprintf "%A"
             | _ -> "bla"
         printfn "command: %s" command
