@@ -1,5 +1,6 @@
 module Api.App
 
+open FSharp.Control.Tasks
 open System
 open System.IO
 open Microsoft.AspNetCore.Builder
@@ -40,13 +41,8 @@ module Views =
     let partial () =
         h1 [] [ encodedText "Api" ]
    
-//    let index (model : Message) =
-//        [
-//            partial()
-//            p [] [ encodedText model.Text ]
-//            yield! model.Events |> List.map(fun e -> p [] [str e])
-//        ] |> layout
-
+open Microsoft.AspNetCore.Http
+open NaiveEventsouring
 open NaiveEventsouring.Domain
 open NaiveEventsouring.Helpers
 open NaiveEventsouring.CompositRoot
@@ -55,30 +51,30 @@ open NaiveEventsouring.CompositRoot
 // Web app
 // ---------------------------------
 
-//let indexHandler (name : string) =
-//    let events = RetrieveEvents
-//    let greetings = sprintf "Hello %s, from Giraffe!" name
-//    let model     = {
-//                    Events = (List.map(fun e -> sprintf "%A" e) events)
-//                    Text = greetings
-//                    }
-//    let view      = Views.index model
-//    htmlView view
-
 let transactionHandler (accountId : int) =
-    RetrieveEvents
-    |> (getAmountFor (AccountId accountId))
-    |> json
-    
-    
+     warbler (fun _ -> json (getAmountFor (AccountId accountId) RetrieveEvents))
+     
+let submitEvent : HttpHandler =
+    fun (next : HttpFunc) (ctx : HttpContext) ->
+        task {
+            // Binds a JSON payload to a Car object
+            let! command = ctx.BindJsonAsync<NaiveEventsouring.Events.Command>()
+            Handler.CommandHandler.Post command
+            
+            // Sends the object back to the client
+            return! Successful.OK command next ctx
+        }
+
 let webApp =
     choose [
         GET >=>
             choose [
-//                route "/" >=> indexHandler "world"
-//                routef "/hello/%s" indexHandler
-                route "/transaction" >=> (json NaiveEventsouring.CompositRoot.RetrieveEvents)
+                route "/transaction" >=> warbler (fun _ -> json NaiveEventsouring.CompositRoot.RetrieveEvents)
                 routef "/transaction/%i" transactionHandler
+            ]
+        POST >=>
+            choose [
+                route "/transaction" >=> submitEvent
             ]
         setStatusCode 404 >=> text "Not Found" ]
 
