@@ -39,36 +39,18 @@ type EventDto =
     | DepositEvent of DepositEventDto
     | WithdrawEvent of WithdrawEventDto
 
-type MoneyDeposited =
-    { AccountId : int
-      DepositAmount : decimal }
-
-type MoneyWithdraw =
-    { AccountId : int
-      WithdrawAmount : decimal }
-
-type OpenAccount =
-    { Name : string
-      Location : string
-      Birthday : DateTime }
-
-type Command =
-    | MoneyDeposited of MoneyDeposited
-    | MoneyWithdraw of MoneyWithdraw
-    | OpenAccount of OpenAccount
-
 type RetrieveBalance =
     { AccountId : AccountId }
 
 type Query = RetrieveBalance of RetrieveBalance
 
-let validateMoneyDepositedCommand md =
-    if md.DepositAmount > 0m then Success md
-    else WorkFlowError (ValidationError "money deposite must be positive")
+// let validateMoneyDepositedCommand md =
+//     if md.DepositAmount > 0m then Success md
+//     else WorkFlowError (ValidationError "money deposite must be positive")
 
-let validateMoneyWithdrawCommand mw =
-    if mw.WithdrawAmount > 0m then Success mw
-    else WorkFlowError (ValidationError "money deposite must be positive")
+// let validateMoneyWithdrawCommand mw =
+//     if mw.WithdrawAmount > 0m then Success mw
+//     else WorkFlowError (ValidationError "money deposite must be positive")
 
 // let validateMoneyWithdrawCommand mw =
 //     if mw.WithdrawAmount > 0m then Success mw

@@ -1,4 +1,4 @@
-module NaiveEventsouring.CompositRoot
+module NaiveEventsouring.CompositionRoot
 
 let RetrieveEvents =
     NaiveEventsouring.SerializeWorkflow.DeserializeWorkflow

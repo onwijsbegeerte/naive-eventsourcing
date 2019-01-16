@@ -4,13 +4,14 @@ open System
 open NaiveEventsouring.Domain
 open NaiveEventsouring.Events
 open NaiveEventsouring.Helpers
+open NaiveEventsouring.Commands
 
 let StateChangeAgent =
     MailboxProcessor<AccountId>.Start(fun inbox -> 
         let rec loop() =
             async { 
                 let! accountChanged = inbox.Receive()
-                let events = NaiveEventsouring.CompositRoot.RetrieveEvents
+                let events = NaiveEventsouring.CompositionRoot.RetrieveEvents
                 let result = getAmountFor accountChanged events
                 printfn "%A change: new amount: %f " accountChanged result
                 return! loop()
@@ -24,7 +25,7 @@ let TransactionAgent =
             async { 
                 // read a message
                 let! transactionEvent = inbox.Receive()
-                NaiveEventsouring.CompositRoot.SaveEvent transactionEvent
+                NaiveEventsouring.CompositionRoot.SaveEvent transactionEvent
                 // process a message
                 printfn "transaction is: %A" transactionEvent
                 StateChangeAgent.Post(getAccountId transactionEvent)
@@ -41,9 +42,9 @@ let CommandHandler =
                 let! command = inbox.Receive()
                 
                 match command with
-                    | MoneyDeposited md -> NaiveEventsouring.CompositRoot.SaveEvent (Deposit {EventId = Guid.NewGuid(); Version = 1; AccountId = (AccountId md.AccountId); Date = DateTime.Now; DepositAmount = md.DepositAmount})
+                    | MoneyDeposited md -> NaiveEventsouring.CompositionRoot.SaveEvent (Deposit {EventId = Guid.NewGuid(); Version = 1; AccountId = (AccountId md.AccountId); Date = DateTime.Now; DepositAmount = md.DepositAmount})
                     
-                    | MoneyWithdraw mw -> NaiveEventsouring.CompositRoot.SaveEvent (Withdraw {EventId = Guid.NewGuid(); Version = 1; AccountId = (AccountId mw.AccountId); Date = DateTime.Now; WithdrawAmount = mw.WithdrawAmount})
+                    | MoneyWithdraw mw -> NaiveEventsouring.CompositionRoot.SaveEvent (Withdraw {EventId = Guid.NewGuid(); Version = 1; AccountId = (AccountId mw.AccountId); Date = DateTime.Now; WithdrawAmount = mw.WithdrawAmount})
                     
                     | OpenAccount  oa -> failwith "not implemented"
 

@@ -5,6 +5,7 @@ type AccountId = AccountId of int
 type AccountStatus =
     | Negative
     | Inactive
+    | Active
 
 type Account =
     { AccountId : AccountId
@@ -14,17 +15,17 @@ type Account =
 
 let unwrap (AccountId id) = id
 
-type WorkFlowError =
-    | ValidationError of string
-    | SerializationError of string
-    | PercistenceError of string
+// type WorkFlowError =
+//     | ValidationError of string
+//     | SerializationError of string
+//     | PercistenceError of string
 
-type Result<'Entity> =
-    | Success of 'Entity
-    | WorkFlowError of WorkFlowError
-
-let Bind f =
-    fun twoTrackInput ->
-        match twoTrackInput with
-        | Success s -> f s
-        | WorkFlowError e -> WorkFlowError e
+// type Result<'Entity> =
+//     | Success of 'Entity
+//     | WorkFlowError of WorkFlowError
+    
+// let Bind f =
+//     fun twoTrackInput ->
+//         match twoTrackInput with
+//         | Success s -> f s
+//         | WorkFlowError e -> WorkFlowError e

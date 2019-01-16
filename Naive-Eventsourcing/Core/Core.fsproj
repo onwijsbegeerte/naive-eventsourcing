@@ -5,10 +5,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Domain.fs" />
+    <Compile Include="Validation.fs" />
     <Compile Include="Events.fs" />
+    <Compile Include="Commands.fs" />
+    <Compile Include="Queries.fs" />
     <Compile Include="SerializeWorkflow.fs" />
     <Compile Include="FileSystemPersistence.fs" />
-    <Compile Include="CompositRoot.fs" />
+    <Compile Include="CompositionRoot.fs" />
     <Compile Include="Helpers.fs" />
     <Compile Include="Handler.fs" />
     <Compile Include="scripts.fsx" />

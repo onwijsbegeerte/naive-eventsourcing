@@ -45,7 +45,7 @@ open Microsoft.AspNetCore.Http
 open NaiveEventsouring
 open NaiveEventsouring.Domain
 open NaiveEventsouring.Helpers
-open NaiveEventsouring.CompositRoot
+open NaiveEventsouring.CompositionRoot
 
 // ---------------------------------
 // Web app
@@ -69,7 +69,7 @@ let webApp =
     choose [
         GET >=>
             choose [
-                route "/transaction" >=> warbler (fun _ -> json NaiveEventsouring.CompositRoot.RetrieveEvents)
+                route "/transaction" >=> warbler (fun _ -> json NaiveEventsouring.CompositionRoot.RetrieveEvents)
                 routef "/transaction/%i" transactionHandler
             ]
         POST >=>

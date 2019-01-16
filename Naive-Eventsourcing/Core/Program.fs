@@ -8,7 +8,7 @@ let main argv =
     printfn "Welkom\n Options\n 1: Withdraw\n 2: Deposit\n 3: Overview\n Exit"
     while true do
         let input = Console.ReadLine()
-        let events = NaiveEventsouring.CompositRoot.RetrieveEvents
+        let events = NaiveEventsouring.CompositionRoot.RetrieveEvents
         let command =
             match input with
             | "1" -> "hello"
