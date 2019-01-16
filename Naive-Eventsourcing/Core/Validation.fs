@@ -15,8 +15,8 @@ let DecimalMustBePositive<'a> (t : 'a) (selector : 'a -> decimal) =
     | x when x <= 0m -> Error "Decimal needs To be Positive"
     | _ -> Ok t  
 
-let ValidateTeste (input : Test) =
-    let result1 = StringCannotBeEmpty input (fun i -> i.Name)
-    let result2 = DecimalMustBePositive input (fun i -> i.Amount)
+//let ValidateTeste (input : Test) =
+//    let result1 = StringCannotBeEmpty input (fun i -> i.Name)
+//    let result2 = DecimalMustBePositive input (fun i -> i.Amount)
 
     

@@ -10,15 +10,16 @@
     <Compile Include="Commands.fs" />
     <Compile Include="Queries.fs" />
     <Compile Include="SerializeWorkflow.fs" />
+    <Compile Include="DataAccess.fs" />
     <Compile Include="FileSystemPersistence.fs" />
-    <Compile Include="CompositionRoot.fs" />
     <Compile Include="Helpers.fs" />
-    <Compile Include="Handler.fs" />
     <Compile Include="scripts.fsx" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="NPoco" Version="3.9.4" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.109.2" />
     <DotNetCliToolReference Include="dotnet-fantomas" Version="2.7.1" />
   </ItemGroup>
 </Project>

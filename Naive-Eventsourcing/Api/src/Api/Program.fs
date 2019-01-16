@@ -45,20 +45,22 @@ open Microsoft.AspNetCore.Http
 open NaiveEventsouring
 open NaiveEventsouring.Domain
 open NaiveEventsouring.Helpers
-open NaiveEventsouring.CompositionRoot
+open Api.CompositionRoot
 
 // ---------------------------------
 // Web app
 // ---------------------------------
 
+let warblerA f a = f a a
+
 let transactionHandler (accountId : int) =
-     warbler (fun _ -> json (getAmountFor (AccountId accountId) RetrieveEvents))
+     warblerA (fun _ -> json (getAmountFor (AccountId accountId) RetrieveEvents))
      
 let submitEvent : HttpHandler =
     fun (next : HttpFunc) (ctx : HttpContext) ->
         task {
             // Binds a JSON payload to a Car object
-            let! command = ctx.BindJsonAsync<NaiveEventsouring.Events.Command>()
+            let! command = ctx.BindJsonAsync<NaiveEventsouring.Commands.Command>()
             Handler.CommandHandler.Post command
             
             // Sends the object back to the client
@@ -69,7 +71,7 @@ let webApp =
     choose [
         GET >=>
             choose [
-                route "/transaction" >=> warbler (fun _ -> json NaiveEventsouring.CompositionRoot.RetrieveEvents)
+                route "/transaction" >=> warblerA (fun _ -> json CompositionRoot.RetrieveEvents)
                 routef "/transaction/%i" transactionHandler
             ]
         POST >=>

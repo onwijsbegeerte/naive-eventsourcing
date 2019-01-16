@@ -66,8 +66,8 @@ let DeserializeWorkflow(events : unit -> JsonString list) : Event list =
     |> SerializeToDomainObject
     |> List.map MapToDomain
 
-let SerializeWorkflow (persist : string -> JsonString -> unit) (event : Event) =
+let SerializeWorkflow (persist : Event -> JsonString -> unit) (event : Event) =
     event
     |> MapToDto
     |> ConvertToJsonString
-    |> persist (FileName event)
+    |> persist event

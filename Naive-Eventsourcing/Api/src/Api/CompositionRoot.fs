@@ -1,9 +1,9 @@
-module NaiveEventsouring.CompositionRoot
+module Api.CompositionRoot
 
 let RetrieveEvents =
     NaiveEventsouring.SerializeWorkflow.DeserializeWorkflow
-        NaiveEventsouring.FileSystemPersistence.RetrieveEvents
+        Persistence.EventsAccess.getEvents
         
 let SaveEvent =
     NaiveEventsouring.SerializeWorkflow.SerializeWorkflow
-        NaiveEventsouring.FileSystemPersistence.SaveToDisk
+        Persistence.EventsAccess.AddEvent

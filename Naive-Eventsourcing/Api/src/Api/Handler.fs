@@ -11,7 +11,7 @@ let StateChangeAgent =
         let rec loop() =
             async { 
                 let! accountChanged = inbox.Receive()
-                let events = NaiveEventsouring.CompositionRoot.RetrieveEvents
+                let events =  Api.CompositionRoot.RetrieveEvents
                 let result = getAmountFor accountChanged events
                 printfn "%A change: new amount: %f " accountChanged result
                 return! loop()
@@ -25,7 +25,7 @@ let TransactionAgent =
             async { 
                 // read a message
                 let! transactionEvent = inbox.Receive()
-                NaiveEventsouring.CompositionRoot.SaveEvent transactionEvent
+                Api.CompositionRoot.SaveEvent transactionEvent
                 // process a message
                 printfn "transaction is: %A" transactionEvent
                 StateChangeAgent.Post(getAccountId transactionEvent)
@@ -42,9 +42,9 @@ let CommandHandler =
                 let! command = inbox.Receive()
                 
                 match command with
-                    | MoneyDeposited md -> NaiveEventsouring.CompositionRoot.SaveEvent (Deposit {EventId = Guid.NewGuid(); Version = 1; AccountId = (AccountId md.AccountId); Date = DateTime.Now; DepositAmount = md.DepositAmount})
+                    | MoneyDeposited md ->  Api.CompositionRoot.SaveEvent (Deposit {EventId = Guid.NewGuid(); Version = 1; AccountId = (AccountId md.AccountId); Date = DateTime.Now; DepositAmount = md.DepositAmount})
                     
-                    | MoneyWithdraw mw -> NaiveEventsouring.CompositionRoot.SaveEvent (Withdraw {EventId = Guid.NewGuid(); Version = 1; AccountId = (AccountId mw.AccountId); Date = DateTime.Now; WithdrawAmount = mw.WithdrawAmount})
+                    | MoneyWithdraw mw ->  Api.CompositionRoot.SaveEvent (Withdraw {EventId = Guid.NewGuid(); Version = 1; AccountId = (AccountId mw.AccountId); Date = DateTime.Now; WithdrawAmount = mw.WithdrawAmount})
                     
                     | OpenAccount  oa -> failwith "not implemented"
 
