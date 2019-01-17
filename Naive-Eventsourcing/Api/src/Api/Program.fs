@@ -11,16 +11,6 @@ open Microsoft.Extensions.DependencyInjection
 open Giraffe
 
 // ---------------------------------
-// Models
-// ---------------------------------
-
-type Message =
-    {
-        Events : string list;
-        Text : string
-    }
-
-// ---------------------------------
 // Views
 // ---------------------------------
 
@@ -53,26 +43,29 @@ open Api.CompositionRoot
 
 let warblerA f a = f a a
 
-let transactionHandler (accountId : int) =
-     warblerA (fun _ -> json (getAmountFor (AccountId accountId) RetrieveEvents))
-     
 let submitEvent : HttpHandler =
     fun (next : HttpFunc) (ctx : HttpContext) ->
         task {
-            // Binds a JSON payload to a Car object
             let! command = ctx.BindJsonAsync<NaiveEventsouring.Commands.Command>()
             Handler.CommandHandler.Post command
             
-            // Sends the object back to the client
             return! Successful.OK command next ctx
         }
+
+let retrieveEvents (next: HttpFunc) (ctx : HttpContext) =
+    let events = CompositionRoot.RetrieveEvents()
+    json events next ctx
+
+let getTotalFor (accountId : int) (next : HttpFunc) (ctx : HttpContext) =
+    let amountFor = getAmountFor (AccountId accountId) (CompositionRoot.RetrieveEvents())
+    json amountFor next ctx
 
 let webApp =
     choose [
         GET >=>
             choose [
-                route "/transaction" >=> warblerA (fun _ -> json CompositionRoot.RetrieveEvents)
-                routef "/transaction/%i" transactionHandler
+               route "/transaction" >=> retrieveEvents
+               routef "/transaction/%i" getTotalFor
             ]
         POST >=>
             choose [

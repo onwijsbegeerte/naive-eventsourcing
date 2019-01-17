@@ -11,7 +11,7 @@ let StateChangeAgent =
         let rec loop() =
             async { 
                 let! accountChanged = inbox.Receive()
-                let events =  Api.CompositionRoot.RetrieveEvents
+                let events =  Api.CompositionRoot.RetrieveEvents()
                 let result = getAmountFor accountChanged events
                 printfn "%A change: new amount: %f " accountChanged result
                 return! loop()
