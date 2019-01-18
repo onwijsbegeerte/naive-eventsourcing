@@ -35,7 +35,6 @@ open Microsoft.AspNetCore.Http
 open NaiveEventsouring
 open NaiveEventsouring.Domain
 open NaiveEventsouring.Helpers
-open Api.CompositionRoot
 
 // ---------------------------------
 // Web app

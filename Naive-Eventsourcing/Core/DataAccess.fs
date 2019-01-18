@@ -42,8 +42,6 @@ module EventsAccess =
 
         let unwrap = function JsonString x -> x
 
-        //let entity = mapToDbEntity event
-
         cmd.Parameters.AddWithValue("$Version", 1) |> ignore
         cmd.Parameters.AddWithValue("EventType", eventType ) |> ignore
         cmd.Parameters.AddWithValue("Payload", unwrap eventString) |> ignore
