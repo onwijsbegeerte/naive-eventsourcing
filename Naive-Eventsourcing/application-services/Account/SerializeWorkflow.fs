@@ -5,19 +5,20 @@ module applicationServices.Account.SerializeWorkflows
     open applicationServices.Account.AccountDTOs
     open NaiveEventsouring.Domain.Account
     open NaiveEventsouring.Domain.Events
+    open System.Globalization;
             
     let MapToDepositEvent(d : DepositEventDto) : MoneyDeposited =
         { EventId = Guid.Parse(d.EventId)
           Version = d.Version
           AccountId = AccountId d.AccountId
-          Date = (DateTime.Parse d.Date)
+          Date = (DateTime.ParseExact(d.Date, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture))
           DepositAmount = d.DepositAmount }
     
     let MapToWithdrawEvent(w : WithdrawEventDto) : MoneyWithdrawn =
         { EventId = Guid.Parse(w.EventId)
           Version = w.Version
           AccountId = AccountId w.AccountId
-          Date = (DateTime.Parse w.Date)
+          Date = (DateTime.ParseExact(w.Date, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture))
           WithdrawAmount = w.WithdrawAmount }
     
     let MapToDepositDto(d : MoneyDeposited) : DepositEventDto =
