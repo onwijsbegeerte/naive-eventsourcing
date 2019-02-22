@@ -43,13 +43,13 @@ let submitEvent : HttpHandler =
     fun (next : HttpFunc) (ctx : HttpContext) ->
         task {
             let! command = ctx.BindJsonAsync<NaiveEventsouring.Domain.Commands.Command>()
-            Handler.CommandHandler.Post command
+            applicationServices.Handler.CommandHandler.Post command
             
             return! Successful.OK command next ctx
         }
 
 let retrieveEvents (next: HttpFunc) (ctx : HttpContext) =
-    let events = CompositionRoot.RetrieveEvents()
+    let events = applicationServices.CompositionRoot.RetrieveEvents()
     json events next ctx
 
 //let getTotalFor (accountId : int) (next : HttpFunc) (ctx : HttpContext) =

@@ -74,7 +74,10 @@
                 | TotalBalanceOfAllAccounts of TotalBalanceOfAllAccounts
 
 
-
+            type Replies =
+                | Balance of AsyncReplyChannel<decimal>
+                | Accounts of AsyncReplyChannel<int>
+                | TotalBalance of AsyncReplyChannel<int>
 
 
 
