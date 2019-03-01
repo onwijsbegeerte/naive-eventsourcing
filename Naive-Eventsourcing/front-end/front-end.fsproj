@@ -16,16 +16,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="RequestModels.fs" />
     <Compile Include="CompositionRoot.fs" />
-    <Compile Include="QueryResults.fs" />
-    <Compile Include="Handler.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="events\2018\12\22\Event-1eb6ac73-c8c2-4831-b4c0-47d6b9a7ac07.json" />
-    <Content Include="events\2018\12\22\Event-58d35e3d-6a66-46b2-86a9-1a170acbe1b1.json" />
-    <Content Include="events\2018\12\22\Event-8a21978c-e55b-4875-a999-45e466c6f8de.json" />
+    <Content Include="appsettings.json" />
     <None Include="web.config" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="WebRoot\**\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

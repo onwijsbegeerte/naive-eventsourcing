@@ -6,26 +6,30 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\core-domain\core-domain.fsproj"/>
+        <ProjectReference Include="..\core-domain\core-domain.fsproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Include="Account\AccountDTOs.fs"/>
-        <Compile Include="Account\SerializeWorkflow.fs"/>
-        <Compile Include="Account\DataAccess.fs"/>
-        <Compile Include="Helpers.fs"/>
-        <Compile Include="Library.fs"/>
+        <Compile Include="Account\AccountDTOs.fs" />
+        <Compile Include="Account\SerializeWorkflow.fs" />
+        <Compile Include="Account\DataAccess.fs" />
+        <Compile Include="Helpers.fs" />
+        <Compile Include="Library.fs" />
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="EventStore.db"/>
+        <Compile Include="WriteRepository.fs" />
+        <Compile Include="QuestionHandler.fs" />
+        <Content Include="EventStore.db" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Newtonsoft.Json" Version="12.0.1"/>
-        <PackageReference Include="NPoco" Version="3.9.4"/>
-        <PackageReference Include="System.Data.SQLite" Version="1.0.109.2"/>
-        <DotNetCliToolReference Include="dotnet-fantomas" Version="2.7.1"/>
+        <PackageReference Include="Microsoft.Azure.DocumentDB" Version="2.2.2" />
+        <PackageReference Include="Microsoft.Azure.DocumentDB.Core" Version="2.2.2" />
+        <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+        <PackageReference Include="NPoco" Version="3.9.4" />
+        <PackageReference Include="System.Data.SQLite" Version="1.0.109.2" />
+        <DotNetCliToolReference Include="dotnet-fantomas" Version="2.7.1" />
     </ItemGroup>
 
 </Project>

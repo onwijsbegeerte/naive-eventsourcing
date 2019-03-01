@@ -1,6 +1,5 @@
 module FrontEnd.App
 
-open FSharp.Control.Tasks
 open System
 open System.IO
 open Microsoft.AspNetCore.Builder
@@ -9,7 +8,7 @@ open Microsoft.AspNetCore.Hosting
 open Microsoft.Extensions.Logging
 open Microsoft.Extensions.DependencyInjection
 open Giraffe
-
+open Microsoft.Extensions.Configuration
 // ---------------------------------
 // Views
 // ---------------------------------
@@ -17,21 +16,25 @@ open Giraffe
 module Views =
     open GiraffeViewEngine
 
-    let layout (content: XmlNode list) =
+    let layout (content : XmlNode list) =
         html [] [
             head [] [
-                title []  [ encodedText "Api" ]
-                link [ _rel  "stylesheet"
+                title [] [ encodedText "Api" ]
+                link [ _rel "stylesheet"
                        _type "text/css"
                        _href "/main.css" ]
             ]
             body [] content
         ]
 
-    let partial () =
+    let partial() =
         h1 [] [ encodedText "Api" ]
-   
+
+open CompositionRoot
+open Core
 open Microsoft.AspNetCore.Http
+open FSharp.Control.Tasks.V2
+open RequestModels
 
 // ---------------------------------
 // Web app
@@ -39,37 +42,67 @@ open Microsoft.AspNetCore.Http
 
 let warblerA f a = f a a
 
-let submitEvent : HttpHandler =
+//let submitEvent : HttpHandler =
+//    fun (next : HttpFunc) (ctx : HttpContext) ->
+//        task {
+//            let! command = ctx.BindJsonAsync<NaiveEventsouring.Domain.Commands.Command>()
+//            Handler.CommandHandler.Post command
+//
+//            return! Successful.OK command next ctx
+//        }
+
+//let retrieveEvents (next: HttpFunc) (ctx : HttpContext) =
+//    let events = CompositionRoot.RetrieveEvents()
+//    json events next ctx
+
+//let PostCosmos (next : HttpFunc) (ctx : HttpContext) =
+//    let events = CosmosDB.postQuestion.Result
+//    Successful.OK events next ctx
+//
+//let getQuestion (next : HttpFunc) (ctx : HttpContext) =
+//    let o = CosmosDB.getQuestion
+//    json o next ctx
+
+let AskQuestion =
     fun (next : HttpFunc) (ctx : HttpContext) ->
         task {
-            let! command = ctx.BindJsonAsync<NaiveEventsouring.Domain.Commands.Command>()
-            Handler.CommandHandler.Post command
-            
-            return! Successful.OK command next ctx
+                let! request = ctx.BindJsonAsync<AskQuestionRequest>()
+                let command : Question.AskQuestion = { AccountId = ValueTypes.AccountId(Guid.Parse(request.AccountId));
+                                          Question = request.Title;
+                                          Body = request.Body;
+                                          Tags = (request.Tags |> List.map (fun t -> ValueTypes.Tag t)) }
+                let getQuestion = CompositionRoot.GetQuestion (CompositionRoot.getClient ctx)
+                let persistEvent = CompositionRoot.PersistEvent (CompositionRoot.getClient ctx)
+
+//                let commandHandler = applicationServices.QuestionHandler.CommandHandler persistEvent getQuestion 
+//                applicationServices.QuestionHandler.CommandHandler.Post (Question.Command.AskQuestion command) |> ignore
+                return! Successful.OK request next ctx
         }
-
-let retrieveEvents (next: HttpFunc) (ctx : HttpContext) =
-    let events = CompositionRoot.RetrieveEvents()
-    json events next ctx
-
-//let getTotalFor (accountId : int) (next : HttpFunc) (ctx : HttpContext) =
-//    
-//    let! result = Handler.QueryHandler.PostAndAsyncReply<NaiveEventsouring.Queries.AllAccounts>()
+        
+//let AskQuestion : HttpHandler =
+//    fun (next : HttpFunc) (ctx : HttpContext) ->
+//       task {
+//            let! request = ctx.BindJsonAsync<AskQuestionRequest>()
 //
-//    
-//    let amountFor = getAmountFor (AccountId accountId) (CompositionRoot.RetrieveEvents())
-//    json amountFor next ctx
+//            return! Successful.OK request next ctx
+//        }        
+
+
+let GetQuestion (qid : string) (next : HttpFunc) (ctx : HttpContext) =
+        json qid next ctx
 
 let webApp =
     choose [
         GET >=>
             choose [
-               route "/transaction" >=> retrieveEvents
-//               routef "/transaction/%i" getTotalFor
+ //            route "/transaction" >=> retrieveEvents
+//             routef "/transaction/%i" getTotalFor
+               routef "/question/%s" GetQuestion 
             ]
         POST >=>
             choose [
-                route "/transaction" >=> submitEvent
+                route "/askQuestion" >=> AskQuestion
+//                route "/question/anwser" >=> 
             ]
         setStatusCode 404 >=> text "Not Found" ]
 
@@ -94,7 +127,7 @@ let configureCors (builder : CorsPolicyBuilder) =
 let configureApp (app : IApplicationBuilder) =
     let env = app.ApplicationServices.GetService<IHostingEnvironment>()
     (match env.IsDevelopment() with
-    | true  -> app.UseDeveloperExceptionPage()
+    | true -> app.UseDeveloperExceptionPage()
     | false -> app.UseGiraffeErrorHandler errorHandler)
         .UseHttpsRedirection()
         .UseCors(configureCors)
@@ -102,7 +135,7 @@ let configureApp (app : IApplicationBuilder) =
         .UseGiraffe(webApp)
 
 let configureServices (services : IServiceCollection) =
-    services.AddCors()    |> ignore
+    services.AddCors() |> ignore
     services.AddGiraffe() |> ignore
 
 let configureLogging (builder : ILoggingBuilder) =
@@ -110,15 +143,22 @@ let configureLogging (builder : ILoggingBuilder) =
            .AddConsole()
            .AddDebug() |> ignore
 
+let configureAppConfiguration  (context: WebHostBuilderContext) (config: IConfigurationBuilder) =  
+    config
+        .AddJsonFile("appsettings.json",false,true)
+        .AddJsonFile(sprintf "appsettings.%s.json" context.HostingEnvironment.EnvironmentName ,true)
+        .AddEnvironmentVariables() |> ignore
+
 [<EntryPoint>]
 let main _ =
     let contentRoot = Directory.GetCurrentDirectory()
-    let webRoot     = Path.Combine(contentRoot, "WebRoot")
+    let webRoot = Path.Combine(contentRoot, "WebRoot")
     WebHostBuilder()
         .UseKestrel()
         .UseContentRoot(contentRoot)
         .UseIISIntegration()
         .UseWebRoot(webRoot)
+        .ConfigureAppConfiguration(configureAppConfiguration)
         .Configure(Action<IApplicationBuilder> configureApp)
         .ConfigureServices(configureServices)
         .ConfigureLogging(configureLogging)

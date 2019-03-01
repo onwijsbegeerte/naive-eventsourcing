@@ -1,8 +1,5 @@
 ﻿module NaiveEventsouring.Program
 
-open System
-open NaiveEventsouring.Domain
-
 [<EntryPoint>]
 let main argv =
     //printfn "Welkom\n Options\n 1: Withdraw\n 2: Deposit\n 3: Overview\n Exit"
