@@ -10,13 +10,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Include="Account\AccountDTOs.fs" />
-        <Compile Include="Account\SerializeWorkflow.fs" />
-        <Compile Include="Account\DataAccess.fs" />
-        <Compile Include="Library.fs" />
-    </ItemGroup>
-
-    <ItemGroup>
         <Compile Include="WriteRepository.fs" />
         <Compile Include="QuestionHandler.fs" />
     </ItemGroup>
