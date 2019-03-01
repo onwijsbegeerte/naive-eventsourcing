@@ -1,31 +1,4 @@
 module applicationServices.QuestionHandler
-    
-//    let CreateQuestion accountId =
-//        Core.Question.state.Create(accountId)
-//    
-//    let CreateQuestionEvent accountId initial =
-//        let question : Core.Question.AskQuestion = {
-//             AccountId = accountId;
-//             Question = "is the earth Flat?";
-//             Body = "I always wonderd...";
-//             Tags = [ Core.ValueTypes.Tag "stupid question" ] }
-//        
-//        Core.Question.exec initial (Core.Question.Command.AskQuestion question)
-//
-//    let GetQuestion accountId =
-//        let initial = Core.Question.state.Create(accountId)
-//        let questionEvent = CreateQuestionEvent accountId initial
-//        let stateAfterQuestion = Core.Question.apply initial questionEvent
-//       
-//        let awnser : Core.Question.AnwserQuestion = {
-//             AccountId = accountId;
-//             QuestionId = stateAfterQuestion.QuestionId;
-//             Anwser = "No..."
-//             Body = "Really it is not"
-//            }
-//        
-//        let awnserEvent = Core.Question.exec stateAfterQuestion (Core.Question.Command.AnwserQuestion awnser)
-//        Core.Question.apply stateAfterQuestion awnserEvent
 
     let handleAskQuestion (aq : Core.Question.AskQuestion) persistEvent : unit =
         let init = Core.Question.state.Create(Option.Some(aq.AccountId))

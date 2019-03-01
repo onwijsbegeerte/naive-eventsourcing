@@ -145,16 +145,3 @@ namespace Core
             function
             | AskQuestion(aq) -> (createAskQuestionEvent aq) |> apply
             | AnwserQuestion(anq) -> (createAnwserQuestionEvent anq) |> apply
-
-    module test =
-        open System
-        open ValueTypes
-        let aic = (AccountId.AccountId(Guid.NewGuid()))
-        let askQuestion : Question.AskQuestion = {
-             AccountId = aic;
-             Question = "is the earth Flat?";
-             Body = "I always wonderd...";
-             Tags = [ Tag "stupid question" ] }
-
-//        let state = Question.state.Create aic
-//        let x = Question.exec state (Question.Command.AskQuestion askQuestion)

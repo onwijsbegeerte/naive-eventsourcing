@@ -42,27 +42,6 @@ open RequestModels
 
 let warblerA f a = f a a
 
-//let submitEvent : HttpHandler =
-//    fun (next : HttpFunc) (ctx : HttpContext) ->
-//        task {
-//            let! command = ctx.BindJsonAsync<NaiveEventsouring.Domain.Commands.Command>()
-//            Handler.CommandHandler.Post command
-//
-//            return! Successful.OK command next ctx
-//        }
-
-//let retrieveEvents (next: HttpFunc) (ctx : HttpContext) =
-//    let events = CompositionRoot.RetrieveEvents()
-//    json events next ctx
-
-//let PostCosmos (next : HttpFunc) (ctx : HttpContext) =
-//    let events = CosmosDB.postQuestion.Result
-//    Successful.OK events next ctx
-//
-//let getQuestion (next : HttpFunc) (ctx : HttpContext) =
-//    let o = CosmosDB.getQuestion
-//    json o next ctx
-
 let AskQuestion =
     fun (next : HttpFunc) (ctx : HttpContext) ->
         task {
@@ -79,15 +58,6 @@ let AskQuestion =
                 return! Successful.OK request next ctx
         }
         
-//let AskQuestion : HttpHandler =
-//    fun (next : HttpFunc) (ctx : HttpContext) ->
-//       task {
-//            let! request = ctx.BindJsonAsync<AskQuestionRequest>()
-//
-//            return! Successful.OK request next ctx
-//        }        
-
-
 let GetQuestion (qid : string) (next : HttpFunc) (ctx : HttpContext) =
         json qid next ctx
 
@@ -95,14 +65,11 @@ let webApp =
     choose [
         GET >=>
             choose [
- //            route "/transaction" >=> retrieveEvents
-//             routef "/transaction/%i" getTotalFor
                routef "/question/%s" GetQuestion 
             ]
         POST >=>
             choose [
                 route "/askQuestion" >=> AskQuestion
-//                route "/question/anwser" >=> 
             ]
         setStatusCode 404 >=> text "Not Found" ]
 

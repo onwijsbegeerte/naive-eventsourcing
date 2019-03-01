@@ -13,14 +13,12 @@
         <Compile Include="Account\AccountDTOs.fs" />
         <Compile Include="Account\SerializeWorkflow.fs" />
         <Compile Include="Account\DataAccess.fs" />
-        <Compile Include="Helpers.fs" />
         <Compile Include="Library.fs" />
     </ItemGroup>
 
     <ItemGroup>
         <Compile Include="WriteRepository.fs" />
         <Compile Include="QuestionHandler.fs" />
-        <Content Include="EventStore.db" />
     </ItemGroup>
 
     <ItemGroup>
