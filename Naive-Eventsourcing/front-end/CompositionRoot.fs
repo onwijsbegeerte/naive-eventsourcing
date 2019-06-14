@@ -15,5 +15,5 @@ let getClient (ctx: HttpContext) : DocumentClient =
 let GetQuestion client =
     WriteRepository.GetQuestion client
     
-let PersistEvent client =
-    WriteRepository.GetQuestion client
+let PersistEvent client : Core.Question.Event -> unit =
+    WriteRepository.PersistEvent client

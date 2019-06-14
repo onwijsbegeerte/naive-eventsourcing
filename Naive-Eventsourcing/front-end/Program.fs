@@ -50,16 +50,20 @@ let AskQuestion =
                                           Question = request.Title;
                                           Body = request.Body;
                                           Tags = (request.Tags |> List.map (fun t -> ValueTypes.Tag t)) }
-                let getQuestion = CompositionRoot.GetQuestion (CompositionRoot.getClient ctx)
-                let persistEvent = CompositionRoot.PersistEvent (CompositionRoot.getClient ctx)
+                let client =  (CompositionRoot.getClient ctx)
+                let getQuestion = CompositionRoot.GetQuestion client
+                let persistEvent = CompositionRoot.PersistEvent client
 
-//                let commandHandler = applicationServices.QuestionHandler.CommandHandler persistEvent getQuestion 
-//                applicationServices.QuestionHandler.CommandHandler.Post (Question.Command.AskQuestion command) |> ignore
+                let x = applicationServices.QuestionHandler.CommandHandler persistEvent getQuestion
+                x.Post (Question.Command.AskQuestion command) |> ignore
+
                 return! Successful.OK request next ctx
         }
         
 let GetQuestion (qid : string) (next : HttpFunc) (ctx : HttpContext) =
-        json qid next ctx
+        let client =  (CompositionRoot.getClient ctx)    
+        let q = CompositionRoot.GetQuestion client (ValueTypes.QuestionId (System.Guid.Parse(qid)))
+        json q next ctx
 
 let webApp =
     choose [
